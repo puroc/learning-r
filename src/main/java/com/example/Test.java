@@ -13,7 +13,7 @@ public class Test {
 
     public static void main(String[] args) {
         try {
-            RserverConf rconf = new RserverConf("172.16.114.205", 6311, "conan", "conan", new Properties());
+            RserverConf rconf = new RserverConf("192.168.167.201", 6311, "conan", "conan", new Properties());
             Rsession s = Rsession.newInstanceTry(System.out, rconf);
 
             // 执行R脚本
