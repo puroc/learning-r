@@ -7,6 +7,4 @@
 *.iml
 out
 gen
-src/main/resources/
-src/test/
 target/
