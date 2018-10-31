@@ -5,7 +5,7 @@ library(forecast)
 # 读取水表用于建立预测模型的历史数据，当header=T时，csv中的第一行数据为头
 x1<-read.table("/Users/puroc/Desktop/r/test4_old_1.csv",header=T, sep=",")
 
-# 加载水表读数，读数时间间隔是7分钟一条
+# 加载水表读数，读数时间间隔是7分钟一条，start和frequency可以不用
 y1<-ts(x1$value,start=c(2018,4),frequency = 74057)
 plot(y1)
 
