@@ -13,7 +13,7 @@ import java.util.Properties;
 /**
  * Created by puroc on 17/4/21.
  */
-public class Test2 {
+public class TestAlgorithm {
 
     public static final String DATA_FILE = "/Users/puroc/git/learning-r/src/main/resources/test4_old_1.csv";
 
@@ -23,7 +23,7 @@ public class Test2 {
             s = getRsession();
             importAlgorithm(s);
             gm11(s, 18291);
-            arima(s,2018,4,74057,18291);
+            arima(s, 18291);
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
@@ -62,15 +62,15 @@ public class Test2 {
         double result = s.eval("result").asDouble();
         System.out.println("!!!!!!!!!!!  " + result);
 
-        s.rm(new String[]{"data","forecast_result","test_data","result"});
+        s.rm(new String[]{"data", "forecast_result", "test_data", "result"});
         s.eval("ls()");
     }
 
-    private static void arima(Rsession s, int year, int month, int frequency, long forecastNum) throws REXPMismatchException {
+    private static void arima(Rsession s, long forecastNum) throws REXPMismatchException {
         double[] data = loadData();
         //  将数据传入到R脚本中
         s.set("data", data);
-        s.eval("forecast_result<-xarima(data," + year + "," + month + "," + frequency + "," + forecastNum + ")");
+        s.eval("forecast_result<-xarima(data," + forecastNum + ")");
 
         double[] forecast_results = s.eval("forecast_result").asDoubles();
         s.eval("test_data<-read.table(\"/root/r/rserver/test4_old_2.csv\",header=T, sep=\",\")");
@@ -82,7 +82,7 @@ public class Test2 {
         double result = s.eval("result").asDouble();
         System.out.println("!!!!!!!!!!!  " + result);
 
-        s.rm(new String[]{"data","forecast_result","test_data","result"});
+        s.rm(new String[]{"data", "forecast_result", "test_data", "result"});
         s.eval("ls()");
     }
 
@@ -126,6 +126,6 @@ public class Test2 {
 
     // 导入算法脚本
     private static void importAlgorithm(Rsession s) throws RserveException {
-        s.connection.eval("source('/root/r/rserver/test6.R')");
+        s.connection.eval("source('/root/r/rserver/algorithm.R')");
     }
 }

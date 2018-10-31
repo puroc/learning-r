@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * Created by puroc on 17/4/21.
  */
-public class Test {
+public class TestR {
 
     public static void main(String[] args) {
         try {
