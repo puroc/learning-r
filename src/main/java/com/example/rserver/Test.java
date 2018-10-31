@@ -1,4 +1,4 @@
-package com.example;
+package com.example.rserver;
 
 import org.math.R.RserverConf;
 import org.math.R.Rsession;
