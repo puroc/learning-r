@@ -21,12 +21,14 @@ public class TestAlgorithm {
     public static final String GM11_DATA_FILE = "/Users/puroc/git/learning-r/src/main/resources/rserver/test4_old_1.csv";
     public static final String GM11_TEST_FILE = "/Users/puroc/git/learning-r/src/main/resources/rserver/test4_old_2.csv";
 
+    public static final String RSERVER_HOST_NAME = "192.168.34.106";
+
     public static void main(String[] args) {
         Rsession s = null;
         try {
             s = getRsession();
             importAlgorithm(s);
-            gm11(s, 18291);
+//            gm11(s, 18291);
             arima(s, 42091);
         } catch (Throwable e) {
             e.printStackTrace();
@@ -129,7 +131,7 @@ public class TestAlgorithm {
 
     // 获取Rsession
     private static Rsession getRsession() throws RserveException {
-        RserverConf rconf = new RserverConf("192.168.167.201", 6311, "conan", "conan", new Properties());
+        RserverConf rconf = new RserverConf(RSERVER_HOST_NAME, 6311, "conan", "conan", new Properties());
         Rsession s = Rsession.newInstanceTry(System.out, rconf);
         return s;
     }
