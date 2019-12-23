@@ -22,6 +22,8 @@ public class TestAlgorithm {
     public static final String GM11_TEST_FILE = "/Users/puroc/git/learning-r/src/main/resources/rserver/test4_old_2.csv";
 
     public static final String RSERVER_HOST_NAME = "192.168.34.106";
+    public static final String PRIMITIVE_FILE = "/Users/puroc/git/learning-r/src/main/resources/rserver/oneyear.csv";
+    public static final String PRIMITIVE_FILE_2 = "/Users/puroc/git/learning-r/src/main/resources/rserver/sevenday.csv";
 
     public static void main(String[] args) {
         Rsession s = null;
@@ -29,7 +31,12 @@ public class TestAlgorithm {
             s = getRsession();
             importAlgorithm(s);
 //            gm11(s, 18291);
-            arima(s, 42091);
+            double[] data = loadData(PRIMITIVE_FILE_2);
+            if(!checkData(data)){
+                throw new Exception("all the data are same");
+            }
+//            arimaAndCompare(s, 42091);
+            arima(s, data,672);
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
@@ -37,6 +44,15 @@ public class TestAlgorithm {
                 s.end();
             }
         }
+    }
+
+    private static boolean checkData(double[] data) {
+        for (int i = 0; i < data.length; i++) {
+            if(data[i]!=data[0]){
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void runR(Rsession s, long forecastNum) throws REXPMismatchException {
@@ -75,7 +91,21 @@ public class TestAlgorithm {
         s.eval("ls()");
     }
 
-    private static void arima(Rsession s, long forecastNum) throws REXPMismatchException {
+    private static void arima(Rsession s, double[] data,long forecastNum) throws REXPMismatchException {
+        //  将数据传入到R脚本中
+        s.set("data", data);
+        s.eval("forecast_result<-xarima(data," + forecastNum + ")");
+
+        double[] forecast_results = s.eval("forecast_result").asDoubles();
+
+        // 删除R中变量，避免被其他方法中误用
+        s.rm(new String[]{"data", "forecast_result"});
+        for (double result : forecast_results) {
+            System.out.println(result);
+        }
+    }
+
+    private static void arimaAndCompare(Rsession s, long forecastNum) throws REXPMismatchException {
         double[] data = loadData(ARIMA_DATA_FILE);
         //  将数据传入到R脚本中
         s.set("data", data);
